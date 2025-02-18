@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mohammad Noorzade</title>
     <style>
         body,
@@ -12,113 +12,142 @@
             padding: 0;
             height: 100%;
             width: 100%;
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #222831;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #222831;
-            font-family: 'Courier New', Courier, monospace;
-            overflow: hidden;
-            position: relative;
         }
 
-        #terminal-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.1;
+        .content-container {
+            position: relative;
+            width: 95%;
+            height: 90%;
+            padding: 30px;
+            border-radius: 24px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             z-index: 1;
+            overflow: hidden;
         }
 
-        .text-container {
-            text-align: center;
-            z-index: 2;
-            position: relative;
+        .content-container::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 0% 0%, rgb(180, 130, 20) 0%, transparent 50%),
+                radial-gradient(circle at 100% 0%, rgb(165, 45, 45) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgb(100, 50, 180) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgb(45, 165, 120) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgb(90, 60, 150) 0%, rgb(40, 40, 100) 100%);
+            animation: gradientMove 15s ease infinite, hueRotate 15s linear infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%, 50% 50%;
+            }
+
+            50% {
+                background-position: 20% 20%, 80% 20%, 80% 80%, 20% 80%, 50% 50%;
+            }
+
+            100% {
+                background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%, 50% 50%;
+            }
+        }
+
+        @keyframes hueRotate {
+            from {
+                filter: hue-rotate(0deg);
+            }
+
+            to {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        .content-container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: overlay;
+            opacity: 0.2;
+            z-index: -1;
         }
 
         .title {
             font-size: 3vw;
             font-weight: bold;
             color: #EEEEEE;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            z-index: 2;
+            position: relative;
         }
 
         .subtitle {
             font-size: 1vw;
             color: #EEEEEE;
+            text-align: center;
+            margin-bottom: 40px;
+            z-index: 2;
+            position: relative;
         }
 
         .social-links {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 40px;
+            left: 60px;
             z-index: 2;
         }
 
         .social-links a {
             color: #EEEEEE;
             text-decoration: none;
-            margin-right: 15px;
+            margin-right: 25px;
             font-size: 1vw;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .social-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #EEEEEE;
+            transition: width 0.3s ease;
         }
 
         .social-links a:hover {
-            text-decoration: underline;
+            color: #ffffff;
+        }
+
+        .social-links a:hover::after {
+            width: 100%;
         }
     </style>
 </head>
 
 <body>
-    <canvas id="terminal-bg"></canvas>
-    <div class="text-container">
+    <div class="content-container">
         <div class="title">Mohammad Noorzade</div>
         <div class="subtitle">Software developer, not as a career but as a value.</div>
+        <div class="social-links">
+            <a href="mailto:coding.mohammad@gmail.com" target="_blank">mail</a>
+            <a href="https://github.com/mohammadnr2817" target="_blank">github</a>
+            <a href="https://x.com/mohammadnr2817" target="_blank">x</a>
+        </div>
     </div>
-    <div class="social-links">
-        <a href="mailto:coding.mohammad@gmail.com">mail</a>
-        <a href="https://github.com/mohammadnr2817">githb</a>
-        <a href="https://x.com/mohammadnr2817">x</a>
-    </div>
-    <script>
-        const canvas = document.getElementById('terminal-bg');
-        const ctx = canvas.getContext('2d');
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const columns = canvas.width / 20;
-        const drops = [];
-
-        for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
-        }
-
-        function draw() {
-            ctx.fillStyle = 'rgba(57, 62, 70, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            ctx.fillStyle = '#0F0';
-            ctx.font = '15px monospace';
-
-            for (let i = 0; i < drops.length; i++) {
-                const text = String.fromCharCode(Math.random() * 128);
-                ctx.fillText(text, i * 20, drops[i] * 20);
-
-                if (drops[i] * 20 > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
-                drops[i]++;
-            }
-        }
-
-        setInterval(draw, 33);
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-    </script>
 </body>
 
 </html>
